@@ -1,0 +1,6 @@
+@TarotStore.Server_HostAddress = http://localhost:5026
+
+GET {{TarotStore.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
