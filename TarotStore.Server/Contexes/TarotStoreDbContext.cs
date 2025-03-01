@@ -7,6 +7,6 @@ namespace TarotStore.Server.Contexes
     {
         public TarotStoreDbContext(DbContextOptions<TarotStoreDbContext> options) : base(options) { }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductEntity> Products { get; set; }
     }
 }
