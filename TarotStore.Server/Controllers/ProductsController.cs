@@ -18,11 +18,9 @@ namespace TarotStore.Server.Controllers
 
         [HttpPost()]
         public async Task<IActionResult> CreateProduct(ProductEntity product) {
-            if (product != null) {
-                _context.Products.Add(product);
-                await _context.SaveChangesAsync();
-            }
-
+            if (product == null) return BadRequest();
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
@@ -32,15 +30,15 @@ namespace TarotStore.Server.Controllers
         }
 
         [HttpGet("Id")]
-        public async Task<ActionResult<ProductEntity>> GetProduct(int Id) {
+        public async Task<IActionResult> GetProduct(int? Id) {
             if (Id == null) return NotFound(); 
             var product = await _context.Products.FindAsync(Id);
             if (product == null) return NotFound();
-            return product;
+            return NoContent();
         }
 
-        [HttpPut("Id")]
-        public async Task<ActionResult<ProductEntity>> UpdateProduct(ProductEntity product) {
+        [HttpPut()]
+        public async Task<IActionResult> UpdateProduct(ProductEntity product) {
             if (product == null) return BadRequest();
             _context.Entry(product).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -48,7 +46,7 @@ namespace TarotStore.Server.Controllers
         }
 
         [HttpDelete("Id")]
-        public async Task<IActionResult> DeleteProduct(int Id) {
+        public async Task<IActionResult> DeleteProduct(int? Id) {
             if (Id == null) return NotFound();
             var product = await _context.Products.FindAsync(Id);
             if (product == null) return NotFound();
