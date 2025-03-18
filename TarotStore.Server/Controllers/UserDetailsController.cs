@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TarotStore.Server.Contexes;
 using TarotStore.Server.Entities;
@@ -16,6 +17,7 @@ namespace TarotStore.Server.Controllers
             _context = context;
         }
 
+        //[Authorize]
         [HttpPost()]
         public async Task<IActionResult> CreateUserDetail(int id, UserEntity user)
         {
@@ -47,6 +49,7 @@ namespace TarotStore.Server.Controllers
         //    return await _context.User.ToListAsync();
         //}
 
+        //[Authorize]
         [HttpGet("Id")]
         public async Task<ActionResult<UserEntity>> GetUserDetail(int? Id)
         {
@@ -56,6 +59,7 @@ namespace TarotStore.Server.Controllers
             return user;
         }
 
+        //[Authorize]
         [HttpPut()]
         public async Task<IActionResult> UpdateUserDetail(UserEntity user)
         {
@@ -65,6 +69,7 @@ namespace TarotStore.Server.Controllers
             return NoContent();
         }
 
+        //[Authorize]
         [HttpDelete("Id")]
         public async Task<IActionResult> DeleteUserDetail(int? Id)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -24,6 +25,7 @@ namespace TarotStore.Server.Controllers
             _configuration = configuration;
         }
 
+        //[Authorize]
         [HttpPost()]
         public async Task<IActionResult> CreateUser(UserEntity user)
         {
@@ -55,12 +57,14 @@ namespace TarotStore.Server.Controllers
             return NoContent();
         }
 
+        //[Authorize]
         [HttpGet()]
         public async Task<ActionResult<IEnumerable<UserEntity>>> GetUsers()
         {
             return await _context.User.ToListAsync();
         }
 
+        //[Authorize]
         [HttpGet("Id")]
         public async Task<ActionResult<UserEntity>> GetUser(int? Id)
         {
@@ -70,6 +74,7 @@ namespace TarotStore.Server.Controllers
             return user;
         }
 
+        //[Authorize]
         [HttpPut()]
         public async Task<IActionResult> UpdateUser(UserEntity user)
         {
@@ -79,6 +84,7 @@ namespace TarotStore.Server.Controllers
             return NoContent();
         }
 
+        //[Authorize]
         [HttpDelete("Id")]
         public async Task<IActionResult> DeleteUser(int? Id)
         {
@@ -90,6 +96,7 @@ namespace TarotStore.Server.Controllers
             return NoContent();
         }
 
+        //[Authorize]
         [HttpPost("login")]
         public async Task<IActionResult> LoginUser(string email, string password)
         {
@@ -110,9 +117,9 @@ namespace TarotStore.Server.Controllers
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, "User") // Додай роль, якщо потрібно
+                    new Claim(ClaimTypes.Role, "User")
                 }),
-                Expires = DateTime.UtcNow.AddHours(1), // Термін дії токена
+                Expires = DateTime.UtcNow.AddHours(1), 
                 Issuer = _configuration["Jwt:Issuer"],
                 Audience = _configuration["Jwt:Audience"],
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
