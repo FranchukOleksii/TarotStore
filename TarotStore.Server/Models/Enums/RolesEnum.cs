@@ -2,11 +2,16 @@
 {
     public enum RolesEnum
     {
-        GlobalAdministrator = 1,
-        Administrator = 2,
-        Managaer = 3,
-        AuthenticatedUser = 4,
-        UnAuthenticatedUser = 5
+        Admin = 1,
+        Manager = 2,
+        ContentMaker = 3,
+        AuthenticatedUser = 4
+
+        //GlobalAdministrator = 1,
+        //Administrator = 2,
+        //Managaer = 3,
+        //AuthenticatedUser = 4,
+        //UnAuthenticatedUser = 5
 
         // TODO: Maybe added more roles in futures if it needed. 
         /* Global_Administrator = 1,

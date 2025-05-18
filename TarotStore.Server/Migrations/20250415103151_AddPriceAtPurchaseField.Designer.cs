@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TarotStore.Server.Contexes;
 
@@ -11,9 +12,11 @@ using TarotStore.Server.Contexes;
 namespace TarotStore.Server.Migrations
 {
     [DbContext(typeof(TarotStoreDbContext))]
-    partial class TarotStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250415103151_AddPriceAtPurchaseField")]
+    partial class AddPriceAtPurchaseField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,9 +36,6 @@ namespace TarotStore.Server.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<decimal>("PriceAtPurchase")
                         .HasColumnType("decimal(18,2)");
 
@@ -46,10 +46,6 @@ namespace TarotStore.Server.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -146,8 +142,6 @@ namespace TarotStore.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("UserByRole");
                 });
 
@@ -182,9 +176,6 @@ namespace TarotStore.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
                     b.ToTable("UserDetails");
                 });
 
@@ -200,9 +191,6 @@ namespace TarotStore.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsEmailConfirmed")
-                        .HasColumnType("bit");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -210,55 +198,6 @@ namespace TarotStore.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("TarotStore.Server.Entities.OrderEntity", b =>
-                {
-                    b.HasOne("TarotStore.Server.Entities.ProductEntity", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TarotStore.Server.Entities.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TarotStore.Server.Entities.UserByRoleEntity", b =>
-                {
-                    b.HasOne("TarotStore.Server.Entities.UserEntity", "User")
-                        .WithMany("UserByRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TarotStore.Server.Entities.UserDetailsEntity", b =>
-                {
-                    b.HasOne("TarotStore.Server.Entities.UserEntity", "User")
-                        .WithOne("UserDetails")
-                        .HasForeignKey("TarotStore.Server.Entities.UserDetailsEntity", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TarotStore.Server.Entities.UserEntity", b =>
-                {
-                    b.Navigation("UserByRoles");
-
-                    b.Navigation("UserDetails")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -43,11 +43,11 @@ namespace TarotStore.Server.Controllers
             return NoContent();
         }
 
-        //[HttpGet()]
-        //public async Task<ActionResult<IEnumerable<UserEntity>>> GetUserDetails()
-        //{
-        //    return await _context.User.ToListAsync();
-        //}
+        [HttpGet()]
+        public async Task<ActionResult<IEnumerable<UserEntity>>> GetUserDetails()
+        {
+            return await _context.User.ToListAsync();
+        }
 
         //[Authorize]
         [HttpGet("Id")]

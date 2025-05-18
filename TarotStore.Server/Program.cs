@@ -3,6 +3,7 @@ using TarotStore.Server.Contexes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TarotStore.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<TarotStoreDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAll", policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+    });
 
 // Add JWT-Authentication
 var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
@@ -33,6 +44,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddScoped<EmailService>();
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -46,6 +59,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+    app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
