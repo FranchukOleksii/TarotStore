@@ -1,51 +1,91 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+﻿//import React, { useState } from 'react';
+//import ProductList from './components/ProductList.jsx';
+//import Cart from './components/Cart.jsx';
+//import Register from './components/Register.jsx';
+//import Login from './components/Login.jsx';
+//import SecretZone from './components/SecretZone.jsx';
+//import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+////import AdminPanel from "./components/AdminPanel";
+
+//function App() {
+//    const [cart, setCart] = useState([]);
+//    const [orderSubmitted, setOrderSubmitted] = useState(false);
+
+//    const addToCart = (product) => {
+//        if (orderSubmitted) setOrderSubmitted(false);
+//        setCart([...cart, product]);
+//    };
+
+//    const removeFromCart = (index) => {
+//        const updatedCart = [...cart];
+//        updatedCart.splice(index, 1);
+//        setCart(updatedCart);
+//    };
+
+//    const clearCart = () => {
+//        setCart([]);
+//    };
+
+//    return (
+//        <div className="App">
+//            <h1 className="text-center mt-4">🔮 Tarot Store</h1>
+
+//            <Register />
+//            <Login />
+//            <SecretZone />
+//            {/*<Route path="/admin" element={<AdminPanel />} />*/}
+
+//            <ProductList addToCart={addToCart} />
+//            <Cart
+//                cart={cart}
+//                removeFromCart={removeFromCart}
+//                clearCart={clearCart}
+//                orderSubmitted={orderSubmitted}
+//                setOrderSubmitted={setOrderSubmitted}
+//            />
+//        </div>
+//    );
+//}
+
+//export default App;
+//===================================================================================================
+//import React from "react";
+//import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+//import AdminPanel from "./components/AdminPanel";
+//// можеш додати й інші компоненти пізніше (наприклад, Home, Login, Profile)
+//import Profile from "./components/Profile";
+//function App() {
+//    return (
+//        <Router>
+//            <div className="container">
+//                <h1>Tarot Store 🃏</h1>
+
+//                <Routes>
+//                    {/* 🔮 Додаткові маршрути додаси тут */}
+//                    <Route path="/admin" element={<AdminPanel />} />
+//                </Routes>
+
+//                <Route path="/profile" element={<Profile />} />
+//            </div>
+//        </Router>
+//    );
+//}
+
+//export default App;
+//===========================================================================
+
+import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
-    const [forecasts, setForecasts] = useState();
-
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
-
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
-
     return (
-        <div>
-            <h1 id="tableLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-        </div>
+        <Router>
+            <Navbar />
+            <AppRoutes />
+        </Router>
     );
-    
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        if (response.ok) {
-            const data = await response.json();
-            setForecasts(data);
-        }
-    }
 }
 
 export default App;

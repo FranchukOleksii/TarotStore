@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TarotStore.Server.Contexes;
 using TarotStore.Server.Entities;
@@ -16,39 +17,42 @@ namespace TarotStore.Server.Controllers
             _context = context;
         }
 
+        //[Authorize]
         [HttpPost()]
         public async Task<IActionResult> CreateProduct(ProductEntity product) {
-            if (product != null) {
-                _context.Products.Add(product);
-                await _context.SaveChangesAsync();
-            }
-
+            if (product == null) return BadRequest();
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
+        //[Authorize]
         [HttpGet()]
         public async Task<ActionResult<IEnumerable<ProductEntity>>> GetProducts() {
             return await _context.Products.ToListAsync();
         }
 
+        //[Authorize]
         [HttpGet("Id")]
-        public async Task<ActionResult<ProductEntity>> GetProduct(int Id) {
+        public async Task<IActionResult> GetProduct(int? Id) {
             if (Id == null) return NotFound(); 
             var product = await _context.Products.FindAsync(Id);
             if (product == null) return NotFound();
-            return product;
+            return NoContent();
         }
 
-        [HttpPut("Id")]
-        public async Task<ActionResult<ProductEntity>> UpdateProduct(ProductEntity product) {
+        //[Authorize]
+        [HttpPut()]
+        public async Task<IActionResult> UpdateProduct(ProductEntity product) {
             if (product == null) return BadRequest();
             _context.Entry(product).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return NoContent();
         }
 
+        //[Authorize]
         [HttpDelete("Id")]
-        public async Task<IActionResult> DeleteProduct(int Id) {
+        public async Task<IActionResult> DeleteProduct(int? Id) {
             if (Id == null) return NotFound();
             var product = await _context.Products.FindAsync(Id);
             if (product == null) return NotFound();
